@@ -1,8 +1,20 @@
 import React, { useState } from "react";
-import { FaTimes, FaUser, FaChevronDown, FaChevronRight } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+import {
+  FaTimes,
+  FaUser,
+  FaChevronDown,
+  FaChevronRight,
+  FaInstagram,
+  FaPinterest,
+  FaTwitter,
+  FaFacebook,
+  FaEnvelope,
+} from "react-icons/fa";
 
 const Sidebar = ({ isOpen, onClose }) => {
   const [openDropdowns, setOpenDropdowns] = useState({});
+  const navigate = useNavigate();
 
   const toggleDropdown = (section) => {
     setOpenDropdowns((prev) => ({
@@ -17,7 +29,7 @@ const Sidebar = ({ isOpen, onClose }) => {
     <div className="fixed inset-0  z-50 " onClick={onClose}>
       {/* Sidebar */}
       <div
-        className="fixed left-0 top-0 h-full w-100 text-xl  bg-white shadow-lg z-60 overflow-y-auto"
+        className="fixed left-0 top-0 h-full w-80 sm:w-96 text-sm sm:text-base bg-white shadow-lg z-60 overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Sidebar Header */}
@@ -44,11 +56,13 @@ const Sidebar = ({ isOpen, onClose }) => {
               Best Seller
             </button>
           </div>
-
           {/* Shop by Categories - Dropdown */}
           <div className="border-t  border-red-700 pt-4">
             <button
-              onClick={() => toggleDropdown("categories")}
+              onClick={() => {
+                toggleDropdown("categories");
+                navigate("/");
+              }}
               className="w-full flex justify-between items-center py-2 text-gray-800 hover:text-gray-900 font-semibold"
             >
               Shop by Categories
@@ -81,7 +95,6 @@ const Sidebar = ({ isOpen, onClose }) => {
               </div>
             )}
           </div>
-
           {/* Shop by Collections - Dropdown */}
           <div className="border-t  border-red-700 pt-4">
             <button
@@ -115,7 +128,6 @@ const Sidebar = ({ isOpen, onClose }) => {
               </div>
             )}
           </div>
-
           {/* Occasion - Dropdown */}
           <div className="border-t  border-red-700 pt-4">
             <button
@@ -149,7 +161,6 @@ const Sidebar = ({ isOpen, onClose }) => {
               </div>
             )}
           </div>
-
           {/* Voguish - Dropdown */}
           <div>
             <button
@@ -180,7 +191,6 @@ const Sidebar = ({ isOpen, onClose }) => {
               </div>
             )}
           </div>
-
           <div>
             <button className="w-full flex border-t  border-red-700 justify-between items-center py-2 text-gray-700 hover:text-gray-900">
               Voguish Men
@@ -189,12 +199,19 @@ const Sidebar = ({ isOpen, onClose }) => {
               925 silver
             </button>
           </div>
-
           <div className="border-t border-red-700 pt-4">
             <button className="w-full text-left py-2 text-blue-600 hover:text-blue-800 font-medium">
               <FaUser className="inline w-4 h-4 mr-2" />
               Log in
             </button>
+          </div>
+
+          <div className="flex items-center space-x-4 pt-4">
+            <FaInstagram className="w-5 h-5 text-gray-600" />
+            <FaPinterest className="w-5 h-5 text-gray-600" />
+            <FaTwitter className="w-5 h-5 text-gray-600" />
+            <FaFacebook className="w-5 h-5 text-gray-600" />
+            <FaEnvelope className="w-5 h-5 text-gray-600" />
           </div>
         </div>
       </div>

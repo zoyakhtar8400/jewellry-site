@@ -7,7 +7,8 @@ import DescriptionSection from "../components/DescriptionSection.jsx";
 import ProductFilter from "../components/ProductFilter.jsx";
 import ProductGrid from "../components/ProductGrid.jsx";
 import PageDescription from "../components/PageDescription.jsx";
-function MainPages() {
+import BottomNav from "../Slidess/BottomNav.jsx";
+function CategoryPage() {
   return (
     <>
       <CategoryNav />
@@ -15,8 +16,9 @@ function MainPages() {
       <ProductFilter />
       <ProductGrid />
       <PageDescription />
+      <BottomNav />
     </>
   );
 }
 
-export default MainPages;
+export default CategoryPage;

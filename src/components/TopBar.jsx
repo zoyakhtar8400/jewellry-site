@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   FaBars,
   FaUser,
@@ -10,6 +11,7 @@ import Sidebar from "../Slidess/Slidebar.jsx";
 
 const TopBar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <>
@@ -26,9 +28,9 @@ const TopBar = () => {
           </div>
 
           {/* Middle - Logo in Cursive */}
-          <div className="flex-1 flex justify-center">
+          <div className="flex-1 flex justify-center mt-2 mb-4">
             <h1
-              className="text-4xl font-bold text-gray-800 tracking-wider"
+              className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-800 ml-2 tracking-wider"
               style={{
                 fontFamily: '"Dancing Script", "Brush Script MT", cursive',
                 textShadow: "1px 1px 2px rgba(0,0,0,0.1)",
@@ -39,18 +41,21 @@ const TopBar = () => {
           </div>
 
           {/* Right Side - Icons */}
-          <div className="flex items-center space-x-4">
-            <button className="text-gray-700 hover:text-gray-900 p-2">
-              <FaUser className="w-5 h-5" />
+          <div className="flex items-center space-x-2 sm:space-x-4">
+            <button className="text-gray-700 hover:text-gray-900 p-1 sm:p-2">
+              <FaUser className="w-4 h-4 sm:w-5 sm:h-5" />
             </button>
-            <button className="text-gray-700 hover:text-gray-900 p-2">
-              <FaSearch className="w-5 h-5" />
+            <button className="text-gray-700 hover:text-gray-900 p-1 sm:p-2">
+              <FaSearch className="w-4 h-4 sm:w-5 sm:h-5" />
             </button>
-            <button className="text-gray-700 hover:text-gray-900 p-2">
-              <FaHeart className="w-5 h-5" />
+            <button className="text-gray-700 hover:text-gray-900 p-1 sm:p-2">
+              <FaHeart className="w-4 h-4 sm:w-5 sm:h-5" />
             </button>
-            <button className="text-gray-700 hover:text-gray-900 p-2 relative">
-              <FaShoppingCart className="w-5 h-5" />
+            <button
+              className="text-gray-700 hover:text-gray-900 p-1 sm:p-2 relative"
+              onClick={() => navigate("/cart")}
+            >
+              <FaShoppingCart className="w-4 h-4 sm:w-5 sm:h-5" />
               <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
                 0
               </span>

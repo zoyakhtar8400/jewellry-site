@@ -30,6 +30,10 @@ const CategoryNav = () => {
       video:
         "https://whatmore-brand-thumbnail-video-assets.b-cdn.net/rubans/tn_4c423261-fb9a-4560-9fd6-53606420be62.mp4",
     },
+    {
+      video:
+        "https://whatmore-brand-thumbnail-video-assets.b-cdn.net/rubans/tn_4c423261-fb9a-4560-9fd6-53606420be62.mp4",
+    },
   ];
 
   const openModal = (index) => {
@@ -44,13 +48,11 @@ const CategoryNav = () => {
       <div className="bg-gray-50 py-4">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-2">
-            <p className="text-sm text-gray-600">Home/Categories</p>
+            <p className="text-sm text-gray-600">Home/</p>
           </div>
 
           <div className="text-center mb-6">
-            <h2 className="text-2xl font-bold text-gray-800">
-              JEWELRY COLLECTIONS
-            </h2>
+            <h2 className="text-4xl  text-gray-800">SHOP BY CATEGORY</h2>
           </div>
 
           <div className="max-w-7xl mx-auto px-4">
@@ -58,7 +60,7 @@ const CategoryNav = () => {
               {categories.map((category, index) => (
                 <div
                   key={index}
-                  className="bg-white border rounded-full w-32 h-32 flex flex-col justify-center items-center text-center cursor-pointer hover:shadow-md transition-shadow overflow-hidden"
+                  className="bg-white border-1 p-1 border-red-500 rounded-full w-32 h-32 flex flex-col justify-center items-center text-center cursor-pointer hover:shadow-md transition-shadow overflow-hidden"
                   onClick={() => openModal(index)}
                 >
                   <video
