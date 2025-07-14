@@ -37,22 +37,22 @@ const TopBar = () => {
           {/* Right Side - Icons */}
           <div className="flex items-center space-x-1 sm:space-x-4">
             <button
-              className="text-gray-700 hover:text-gray-900 p-1 sm:p-2"
+              className="text-gray-700 hover:text-red-700 p-1 sm:p-2"
               onClick={() => navigate("/login")}
             >
               <FaUser className="w-3 h-3 sm:w-5 sm:h-5" />
             </button>
-            <button className="text-gray-700 hover:text-gray-900 p-1 sm:p-2">
+            <button className="text-gray-700 hover:text-red-700 p-1 sm:p-2">
               <FaSearch className="w-3 h-3 sm:w-5 sm:h-5" />
             </button>
             <button
-              className="text-gray-700 hover:text-gray-900 p-1 sm:p-2"
+              className="text-gray-700 hover:text-red-700 p-1 sm:p-2"
               onClick={() => navigate("/wishlist")}
             >
               <FaHeart className="w-3 h-3 sm:w-5 sm:h-5" />
             </button>
             <button
-              className="text-gray-700 hover:text-gray-900 p-1 sm:p-2 relative"
+              className="text-gray-700 hover:text-red-700 p-1 sm:p-2 relative"
               onClick={() => navigate("/cart")}
             >
               <FaShoppingCart className="w-3 h-3 sm:w-5 sm:h-5" />

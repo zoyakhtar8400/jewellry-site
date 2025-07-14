@@ -200,7 +200,7 @@ const Sidebar = ({ isOpen, onClose }) => {
             </button>
           </div>
 
-          <div className="md:hidden border-t border-red-700 font-bold border- ">
+          <div className="md:hidden border-t border-red-700 font-bold ">
             <div className="grid grid-cols-3 justify-items-start text-center">
               <button
                 className="py-2 text-gray-700 hover:text-gray-900 text-xs"

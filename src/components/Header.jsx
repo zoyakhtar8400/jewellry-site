@@ -18,18 +18,18 @@ const Header = () => {
   const navigate = useNavigate();
 
   return (
-    <header className="bg-white shadow-sm  ">
-      <div className="max-w-7xl mx-auto  flex justify-between items-center">
+    <header className="bg-white mb-2 ">
+      <div className="max-w-7xl mx-auto  flex justify-between items-center ">
         {/* Navigation Menu - Left Side (Hidden on mobile) */}
-        <nav className="hidden md:flex space-x-4 ">
+        <nav className="hidden md:flex space-x-4  ">
           <span
-            className="text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium cursor-pointer"
+            className="text-gray-700 hover:text-red-700 px-3 py-2 text-[15px] font-medium cursor-pointer"
             onClick={() => navigate("/")}
           >
             Home
           </span>
           <span
-            className="text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium cursor-pointer"
+            className="text-gray-700 hover:text-red-700 px-3 py-2 text-[15px] font-medium cursor-pointer"
             onClick={() => navigate("/about")}
           >
             About Us
@@ -38,7 +38,7 @@ const Header = () => {
           {/* Products with Dropdown */}
           <div className="relative">
             <span
-              className="text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium cursor-pointer flex items-center"
+              className="text-gray-700 hover:text-red-700 px-3 py-2 text-[15px] font-medium cursor-pointer flex items-center"
               onClick={() => navigate("/category")}
             >
               Category
@@ -63,11 +63,11 @@ const Header = () => {
             )} */}
           </div>
 
-          <span className="text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium cursor-pointer">
+          <span className="text-gray-700 hover:text-red-700 px-3 py-2 text-[15px] font-medium cursor-pointer">
             Style Guide
           </span>
           <span
-            className="text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium cursor-pointer"
+            className="text-gray-700 hover:text-red-700 px-3 py-2  text-[15px] font-medium cursor-pointer"
             onClick={() => navigate("/contact")}
           >
             Contact Us

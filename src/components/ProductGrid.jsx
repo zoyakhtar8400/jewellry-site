@@ -1,13 +1,25 @@
 import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { FaHeart } from "react-icons/fa";
 
 const API_URL = "https://glitzzera-backend.vercel.app/api/products";
 
 const ProductGrid = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [wishlist, setWishlist] = useState(new Set());
   const navigate = useNavigate();
+
+  const toggleWishlist = (productId) => {
+    const newWishlist = new Set(wishlist);
+    if (newWishlist.has(productId)) {
+      newWishlist.delete(productId);
+    } else {
+      newWishlist.add(productId);
+    }
+    setWishlist(newWishlist);
+  };
 
   useEffect(() => {
     axios
@@ -47,15 +59,32 @@ const ProductGrid = () => {
                   <img
                     src={product.images[1]}
                     alt={product.shortTitle}
-                    className="w-full h-full object-cover absolute top-0 left-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    className="w-full h-full object-cover cursor-pointer absolute top-0 left-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                   />
                 )}
+
+                {/* Wishlist Heart Icon */}
+                <button
+                  className="absolute top-2 left-2 p-2 rounded-full transition-colors z-10"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggleWishlist(product._id);
+                  }}
+                >
+                  <FaHeart
+                    className={`w-6 h-6 transition-colors ${
+                      wishlist.has(product._id)
+                        ? "text-red-500"
+                        : "text-gray-400"
+                    }`}
+                  />
+                </button>
               </div>
 
               {/* Product Details */}
-              <div className="p-4 h-30 flex-col justify-between">
+              <div className="p-4 h-30 flex-col justify-between cursor-pointer">
                 {/* Product Title */}
-                <h3 className="text-sm font-medium text-gray-800 line-clamp-3 mb-2">
+                <h3 className="text-sm font-medium text-gray-600  hover:text-gray-800 line-clamp-3 mb-2">
                   {product.longTitle}
                 </h3>
 
@@ -75,6 +104,10 @@ const ProductGrid = () => {
                 {/* Add to Cart Button */}
                 <button
                   className="w-full bg-black hover:bg-gray-700 text-white font-thin py-2 px-4 rounded-md transition-colors duration-200"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    // Add to cart logic here
+                  }}
                   style={{
                     fontFamily: '"Inter", "Helvetica Neue", Arial, sans-serif',
                   }}

@@ -46,24 +46,29 @@ const CircularDivs = () => {
   return (
     <>
       <div className="max-w-7xl mx-auto px-4">
-        <div className="flex justify-center items-center flex-wrap gap-6">
-          {categories.map((category, index) => (
-            <div
-              key={index}
-              className="bg-white border-1 p-1 border-red-500 rounded-full w-32 h-32 flex flex-col justify-center items-center text-center cursor-pointer hover:shadow-md transition-shadow overflow-hidden"
-              onClick={() => openModal(index)}
-            >
-              <video
-                className="w-full h-full object-cover rounded-full"
-                autoPlay
-                loop
-                muted
-                playsInline
+        <div className="overflow-x-auto scrollbar-hide md:overflow-visible">
+          <div
+            className="flex gap-4 sm:gap-6 pb-4 md:pb-0 md:justify-center md:flex-wrap"
+            style={{ minWidth: "max-content" }}
+          >
+            {categories.map((category, index) => (
+              <div
+                key={index}
+                className="bg-white border-1 p-1 border-red-500 rounded-full w-28 h-28 sm:w-32 sm:h-32 flex-shrink-0 flex flex-col justify-center items-center text-center cursor-pointer hover:shadow-md transition-shadow overflow-hidden"
+                onClick={() => openModal(index)}
               >
-                <source src={category.video} type="video/mp4" />
-              </video>
-            </div>
-          ))}
+                <video
+                  className="w-full h-full object-cover rounded-full"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                >
+                  <source src={category.video} type="video/mp4" />
+                </video>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
