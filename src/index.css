@@ -42,3 +42,6 @@
 .animate-slide-in-right {
   animation: slide-in-right 0.5s ease-in-out;
 }
+.h-screen\/2 {
+  height: 50vh;
+}

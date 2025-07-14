@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
@@ -6,12 +7,13 @@ const API_URL = "https://glitzzera-backend.vercel.app/api/products";
 const ProductGrid = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios
       .get(API_URL)
       .then((res) => {
-        setProducts(res.data);
+        setProducts(res.data.products);
         setLoading(false);
       })
       .catch(() => {
@@ -25,13 +27,14 @@ const ProductGrid = () => {
   }
 
   return (
-    <div className="bg-gray-50 ">
+    <div className="bg-gray-50  mt-4">
       <div className="max-w-7xl mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {products.map((product) => (
             <div
               key={product._id}
               className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow h-[36rem] group"
+              onClick={() => navigate(`/product/${product._id}`)}
             >
               {/* Product Image */}
               <div className="h-100 bg-gray-200 relative overflow-hidden">

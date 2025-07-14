@@ -16,12 +16,11 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Company Info */}
           <div>
-            <h3
-              className="text-xl font-bold mb-4"
-              style={{ fontFamily: '"Dancing Script", cursive' }}
-            >
-              Rubans
-            </h3>
+            <div className="flex-1 flex justify-right mt-2 mb-4">
+              <h2 className="text-6xl font-light bg-gradient-to-r from-amber-400 to-rose-800 bg-clip-text text-transparent">
+                Glitzzera         
+              </h2>
+            </div>
             <p className="text-gray-300 text-sm mb-4">
               Discover exquisite jewelry that brings out your inner sparkle.
               From traditional to contemporary designs.

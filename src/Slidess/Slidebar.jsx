@@ -199,10 +199,55 @@ const Sidebar = ({ isOpen, onClose }) => {
               925 silver
             </button>
           </div>
+
+          <div className="md:hidden border-t border-red-700 font-bold border- ">
+            <div className="grid grid-cols-3 justify-items-start text-center">
+              <button
+                className="py-2 text-gray-700 hover:text-gray-900 text-xs"
+                onClick={() => navigate("/")}
+              >
+                Home
+              </button>
+              <button
+                className="py-2 text-gray-700 hover:text-gray-900 text-xs"
+                onClick={() => navigate("/about")}
+              >
+                About Us
+              </button>
+              <button
+                className="py-2 text-gray-700 hover:text-gray-900 text-xs"
+                onClick={() => navigate("/category")}
+              >
+                Category
+              </button>
+            </div>
+            <div className="grid grid-cols-2 justify-items-start text-center">
+              <button className="py-2 text-gray-700 hover:text-gray-900 text-xs">
+                Style Guide
+              </button>
+              <button
+                className="py-2 text-gray-700 hover:text-gray-900 text-xs"
+                onClick={() => navigate("/contact")}
+              >
+                Contact Us
+              </button>
+            </div>
+          </div>
           <div className="border-t border-red-700 pt-4">
-            <button className="w-full text-left py-2 text-blue-600 hover:text-blue-800 font-medium">
+            <button
+              className="w-full text-left py-2 text-blue-600 hover:text-blue-800 font-medium"
+              onClick={() => navigate("/login")}
+            >
               <FaUser className="inline w-4 h-4 mr-2" />
               Log in
+            </button>
+
+            <button
+              className="w-full text-left py-2 text-red-600 hover:text-red-800 font-medium mt-2"
+              onClick={() => navigate("/complaint")}
+            >
+              <FaEnvelope className="inline w-4 h-4 mr-2" />
+              Raise Complaint
             </button>
           </div>
 

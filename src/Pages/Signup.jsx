@@ -1,12 +1,21 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { FaUser } from "react-icons/fa";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
+    name: "",
     email: "",
     password: "",
+    phone: "",
+    alternatePhone: "",
   });
+  const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [profileImage, setProfileImage] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData((prev) => ({
@@ -15,101 +24,212 @@ const Signup = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
-    // You can add validation or backend API call here
+    if (
+      !formData.name ||
+      !formData.email ||
+      !formData.password ||
+      !formData.phone
+    ) {
+      setMessage("Please fill in all required fields.");
+      return;
+    }
+
+    if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      setMessage("Please enter a valid email address.");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const response = await axios.post(
+        "https://glitzzera-backend.vercel.app/api/users/register",
+        {
+          name: formData.name,
+          email: formData.email,
+          password: formData.password,
+          phone: formData.phone,
+          alternatePhone: formData.alternatePhone,
+        }
+      );
+
+      setMessage("User registered successfully!");
+      setTimeout(() => {
+        navigate("/login");
+      }, 2000);
+    } catch (error) {
+      console.error("Registration error:", error.response?.data);
+      setMessage(error.response?.data?.message || "Registration failed.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setProfileImage(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-white px-2 sm:px-4">
-      <form
-        onSubmit={handleSubmit}
-        className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl 2xl:max-w-2xl flex flex-col gap-4"
-      >
-        <h2 className="text-2xl font-semibold text-center mb-2 tracking-wide">
+    <div className="min-h-screen flex items-center justify-center px-4 py-8">
+      <div className="w-full max-w-md bg-white  p-8">
+        <div className="flex justify-center mb-6">
+          <div
+            className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center cursor-pointer hover:bg-gray-200 transition-colors border-2 border-dashed border-gray-300"
+            onClick={() => document.getElementById("profileImage").click()}
+          >
+            {imagePreview ? (
+              <img
+                src={imagePreview}
+                alt="Profile"
+                className="w-full h-full rounded-full object-cover"
+              />
+            ) : (
+              <div className="text-center">
+                <FaUser className="w-8 h-8 text-gray-400 mx-auto mb-1" />
+                <span className="text-xs text-gray-500">Profile</span>
+              </div>
+            )}
+          </div>
+          <input
+            type="file"
+            id="profileImage"
+            accept="image/*"
+            onChange={handleImageUpload}
+            className="hidden"
+          />
+        </div>
+        <h2 className="text-3xl font-bold text-center mb-8 text-gray-800">
           CREATE ACCOUNT
         </h2>
 
-        <div>
-          <label
-            htmlFor="firstName"
-            className="block text-xs font-semibold tracking-widest uppercase text-gray-700 mb-1"
-          >
-            First Name
-          </label>
-          <input
-            type="text"
-            id="firstName"
-            name="firstName"
-            value={formData.firstName}
-            onChange={handleChange}
-            className="w-full border border-black px-3 py-2 focus:outline-none"
-            required
-          />
-        </div>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div>
+            <label
+              htmlFor="name"
+              className="block text-sm font-medium text-gray-700 mb-2"
+            ></label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              placeholder="Full Name"
+              className="w-full border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent shadow-sm"
+              required
+            />
+          </div>
 
-        <div>
-          <label
-            htmlFor="lastName"
-            className="block text-xs font-semibold tracking-widest uppercase text-gray-700 mb-1"
-          >
-            Last Name
-          </label>
-          <input
-            type="text"
-            id="lastName"
-            name="lastName"
-            value={formData.lastName}
-            onChange={handleChange}
-            className="w-full border border-black px-3 py-2 focus:outline-none"
-            required
-          />
-        </div>
+          <div>
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700 mb-2"
+            ></label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="Email Address"
+              className="w-full border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent shadow-sm"
+              required
+            />
+          </div>
 
-        <div>
-          <label
-            htmlFor="email"
-            className="block text-xs font-semibold tracking-widest uppercase text-gray-700 mb-1"
-          >
-            Email
-          </label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            className="w-full border border-black px-3 py-2 focus:outline-none"
-            required
-          />
-        </div>
+          <div>
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-gray-700 mb-2"
+            ></label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              placeholder="Password"
+              className="w-full border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent shadow-sm"
+              required
+            />
+          </div>
 
-        <div>
-          <label
-            htmlFor="password"
-            className="block text-xs font-semibold tracking-widest uppercase text-gray-700 mb-1"
-          >
-            Password
-          </label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            className="w-full border border-black px-3 py-2 focus:outline-none"
-            required
-          />
-        </div>
+          <div>
+            <label
+              htmlFor="phone"
+              className="block text-sm font-medium text-gray-700 mb-2"
+            ></label>
+            <input
+              type="tel"
+              id="phone"
+              name="phone"
+              value={formData.phone}
+              onChange={handleChange}
+              placeholder="Phone Number"
+              className="w-full border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent shadow-sm"
+              required
+            />
+          </div>
 
-        <button
-          type="submit"
-          className="bg-black text-white py-2 mt-2 uppercase tracking-widest text-sm hover:bg-gray-800"
-        >
-          Create
-        </button>
-      </form>
+          <div>
+            <label
+              htmlFor="alternatePhone"
+              className="block text-sm font-medium text-gray-700 mb-2"
+            ></label>
+            <input
+              type="tel"
+              id="alternatePhone"
+              name="alternatePhone"
+              value={formData.alternatePhone}
+              onChange={handleChange}
+              placeholder=" Alternate Number (Optional)"
+              className="w-full border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent shadow-sm"
+            />
+          </div>
+
+          {message && (
+            <div
+              className={`text-center text-sm p-3 rounded-md ${
+                message.includes("successful")
+                  ? "bg-green-50 text-green-600 border border-green-200"
+                  : "bg-red-50 text-red-600 border border-red-200"
+              }`}
+            >
+              {message}
+            </div>
+          )}
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full bg-black text-white py-3 rounded-md font-semibold hover:bg-gray-800 disabled:opacity-60 disabled:cursor-not-allowed transition-colors shadow-md"
+          >
+            {loading ? "Creating Account..." : "Create Account"}
+          </button>
+        </form>
+
+        <div className="mt-6 text-center">
+          <p className="text-gray-600">
+            Already have an account?{" "}
+            <span
+              onClick={() => navigate("/login")}
+              className="text-blue-600  cursor-pointer hover:underline"
+            >
+              Sign In
+            </span>
+          </p>
+        </div>
+      </div>
     </div>
   );
 };

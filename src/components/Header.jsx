@@ -28,7 +28,10 @@ const Header = () => {
           >
             Home
           </span>
-          <span className="text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium cursor-pointer">
+          <span
+            className="text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium cursor-pointer"
+            onClick={() => navigate("/about")}
+          >
             About Us
           </span>
 
@@ -36,13 +39,13 @@ const Header = () => {
           <div className="relative">
             <span
               className="text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium cursor-pointer flex items-center"
-              onClick={() => setIsProductDropdownOpen(!isProductDropdownOpen)}
+              onClick={() => navigate("/category")}
             >
-              Products
-              <FaChevronDown className="ml-1 w-3 h-3" />
+              Category
+              {/* <FaChevronDown className="ml-1 w-3 h-3" /> */}
             </span>
 
-            {isProductDropdownOpen && (
+            {/* {isProductDropdownOpen && (
               <div className="absolute top-full left-0 mt-1 w-48 bg-white border shadow-lg rounded-md z-50">
                 <span className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">
                   Rings
@@ -57,13 +60,16 @@ const Header = () => {
                   Bracelets
                 </span>
               </div>
-            )}
+            )} */}
           </div>
 
           <span className="text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium cursor-pointer">
             Style Guide
           </span>
-          <span className="text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium cursor-pointer">
+          <span
+            className="text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium cursor-pointer"
+            onClick={() => navigate("/contact")}
+          >
             Contact Us
           </span>
         </nav>

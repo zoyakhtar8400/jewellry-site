@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import BottomNav from "../Slidess/BottomNav";
 
 const Wishlist = () => {
   const [wishlist, setWishlist] = useState([
@@ -29,24 +30,45 @@ const Wishlist = () => {
     <div className="min-h-screen bg-white flex flex-col items-center pt-6 px-2 sm:px-4">
       <h1 className="text-3xl font-bold mb-2">WISHLIST</h1>
       <p className="text-sm text-gray-600">
-        To save your wishlist please <Link to="/login" className="text-blue-600 underline">login</Link> or <Link to="/signup" className="text-blue-600 underline">sign up</Link>.
+        To save your wishlist please{" "}
+        <Link to="/login" className="text-blue-600 underline">
+          login
+        </Link>{" "}
+        or{" "}
+        <Link to="/signup" className="text-blue-600 underline">
+          sign up
+        </Link>
+        .
       </p>
 
       <div className="mt-4 text-gray-600 flex items-center gap-1 cursor-pointer">
-        <svg className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2"
-             viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round"
-                d="M15 17h5l-1.405-1.405M20 12a8 8 0 11-16 0 8 8 0 0116 0z"/>
+        <svg
+          className="h-4 w-4"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M15 17h5l-1.405-1.405M20 12a8 8 0 11-16 0 8 8 0 0116 0z"
+          />
         </svg>
         <span>Share wishlist</span>
       </div>
 
       <div className="mt-10 flex flex-wrap justify-center gap-4 sm:gap-6">
         {wishlist.length === 0 ? (
-          <div className="text-xl text-gray-400 font-semibold py-16">No items in your wishlist.</div>
+          <div className="text-xl text-gray-400 font-semibold py-16">
+            No items in your wishlist.
+          </div>
         ) : (
           wishlist.map((item) => (
-            <div key={item.id} className="w-full max-w-xs sm:w-64 border rounded-md shadow-md p-3 sm:p-4 flex flex-col items-center">
+            <div
+              key={item.id}
+              className="w-full max-w-xs sm:w-64 border rounded-md shadow-md p-3 sm:p-4 flex flex-col items-center"
+            >
               <img
                 src={item.image}
                 alt={item.name}
@@ -55,8 +77,12 @@ const Wishlist = () => {
               <div className="text-sm text-center mt-2">
                 <p className="text-gray-700">{item.name}</p>
                 <p className="mt-1">
-                  <span className="line-through text-gray-400 text-sm mr-2">₹{item.oldPrice} INR</span>
-                  <span className="text-green-600 text-sm font-semibold">₹{item.price} INR</span>
+                  <span className="line-through text-gray-400 text-sm mr-2">
+                    ₹{item.oldPrice} INR
+                  </span>
+                  <span className="text-green-600 text-sm font-semibold">
+                    ₹{item.price} INR
+                  </span>
                 </p>
               </div>
               <button className="w-full mt-3 bg-black text-white py-2 text-sm hover:bg-gray-800">
@@ -72,6 +98,7 @@ const Wishlist = () => {
           ))
         )}
       </div>
+      <BottomNav />
     </div>
   );
 };

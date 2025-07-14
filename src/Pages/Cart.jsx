@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import BottomNav from "../Slidess/BottomNav";
 
 const Cart = () => {
   const unitPrice = 434;
@@ -51,11 +52,21 @@ const Cart = () => {
             <table className="min-w-full text-left text-xs sm:text-sm md:text-base">
               <thead className="bg-pink-50">
                 <tr>
-                  <th className="p-2 sm:p-4 font-bold text-pink-700 text-xs sm:text-lg">Image</th>
-                  <th className="p-2 sm:p-4 font-bold text-pink-700 text-xs sm:text-lg">Product Name</th>
-                  <th className="p-2 sm:p-4 font-bold text-pink-700 text-xs sm:text-lg">Unit Price</th>
-                  <th className="p-2 sm:p-4 font-bold text-pink-700 text-xs sm:text-lg">Weight (g)</th>
-                  <th className="p-2 sm:p-4 font-bold text-pink-700 text-xs sm:text-lg">Remove</th>
+                  <th className="p-2 sm:p-4 font-bold text-pink-700 text-xs sm:text-lg">
+                    Image
+                  </th>
+                  <th className="p-2 sm:p-4 font-bold text-pink-700 text-xs sm:text-lg">
+                    Product Name
+                  </th>
+                  <th className="p-2 sm:p-4 font-bold text-pink-700 text-xs sm:text-lg">
+                    Unit Price
+                  </th>
+                  <th className="p-2 sm:p-4 font-bold text-pink-700 text-xs sm:text-lg">
+                    Weight (g)
+                  </th>
+                  <th className="p-2 sm:p-4 font-bold text-pink-700 text-xs sm:text-lg">
+                    Remove
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -108,7 +119,10 @@ const Cart = () => {
               Your Cart is Empty! 💍
             </span>
             <span className="text-sm sm:text-lg md:text-xl text-gray-500 max-w-xl text-center">
-              It looks like your cart is missing some sparkle! Explore our exquisite collection of traditional and modern jewelry, from dazzling gold-plated necklaces to elegant earrings and statement rings. Add your favorites now and shine with timeless beauty.
+              It looks like your cart is missing some sparkle! Explore our
+              exquisite collection of traditional and modern jewelry, from
+              dazzling gold-plated necklaces to elegant earrings and statement
+              rings. Add your favorites now and shine with timeless beauty.
             </span>
             <span className="text-lg sm:text-2xl mt-2 text-center">
               ✨🛒 Start Shopping &amp; Adorn Yourself! ✨
@@ -181,6 +195,7 @@ const Cart = () => {
           </button>
         </div>
       </div>
+      <BottomNav />
     </div>
   );
 };
