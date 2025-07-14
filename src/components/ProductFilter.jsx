@@ -7,7 +7,7 @@ const ProductFilter = () => {
 
   return (
     <>
-      <div className="bg-white py-4 md:py-6 shadow-sm">
+      <div className="bg-white py-4 md:py-6 ">
         <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
           {/* Left Side - Filter Options */}
           <div className="w-full md:w-auto">

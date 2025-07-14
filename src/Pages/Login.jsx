@@ -45,7 +45,7 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-white px-2 sm:px-4 relative">
+    <div className="min-h-screen flex flex-col items-center justify-center mb-20 bg-white px-2 sm:px-4 relative">
       {/* Top right necklace image */}
       <img
         src="/assets/necklace2.jpg"

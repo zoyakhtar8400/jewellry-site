@@ -4,10 +4,14 @@ const AboutUs = () => {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <div className="bg-gray-50 py-16">
+      <div className="bg-gray-50 py-4">
         <div className="max-w-4xl mx-auto px-4 text-center">
-          <h1 className="text-4xl md:text-5xl  text-gray-800 mb-6">
-            About Glitzzera
+          <div className="text-center mb-2">
+            <p className="text-sm text-gray-600">Home/</p>
+          </div>
+
+          <h1 className="text-4xl md:text-4xl  text-gray-800 mb-6">
+            ABOUT GLITZERRA
           </h1>
           <p className="text-xl text-gray-600 leading-relaxed">
             "Every piece of jewelry tells a story, and at Glitzzera, we craft

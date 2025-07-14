@@ -5,7 +5,7 @@ import CircularDivs from "./CircularDivs";
 const CategoryNav = () => {
   return (
     <>
-      <div className="bg-gray-50 py-4">
+      <div className="bg-white py-4">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-2">
             <p className="text-sm text-gray-600">Home/</p>

@@ -16,6 +16,7 @@ import Signup from "./Pages/Signup.jsx";
 import Complaint from "./Pages/Complaint";
 import ContactUs from "./Pages/ContactUs.jsx";
 import AboutUs from "./Pages/AboutUs.jsx";
+import StyleGuide from "./Pages/StyleGuide.jsx";
 
 function App() {
   return (
@@ -26,7 +27,6 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<AboutUs />} />
-
         <Route path="/category" element={<CategoryPage />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/checkout" element={<CheckoutPage />} />
@@ -35,6 +35,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/complaint" element={<Complaint />} />
+        <Route path="/styleguide" element={<StyleGuide />} />
+
         <Route path="/contact" element={<ContactUs />} />
       </Routes>
       <Footer />

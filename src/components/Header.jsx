@@ -63,7 +63,10 @@ const Header = () => {
             )} */}
           </div>
 
-          <span className="text-gray-700 hover:text-red-700 px-3 py-2 text-[15px] font-medium cursor-pointer">
+          <span
+            className="text-gray-700 hover:text-red-700 px-3 py-2 text-[15px] font-medium cursor-pointer"
+            onClick={() => navigate("/styleguide")}
+          >
             Style Guide
           </span>
           <span

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import BottomNav from "../Slidess/BottomNav";
 
@@ -6,8 +6,6 @@ const Cart = () => {
   const unitPrice = 434;
   const tax = parseFloat((unitPrice * 0.09).toFixed(2));
   const total = parseFloat((unitPrice + tax).toFixed(2));
-
-  // Demo cart items state
   const [cartItems, setCartItems] = useState([
     {
       id: 1,
@@ -19,12 +17,15 @@ const Cart = () => {
     },
   ]);
   const totalWeight = cartItems.reduce((sum, item) => sum + item.weight, 0);
-
   const handleRemove = (id) => {
     setCartItems((prev) => prev.filter((item) => item.id !== id));
   };
-
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const savedCart = JSON.parse(localStorage.getItem("cart") || "[]");
+    setCartItems(savedCart);
+  }, []);
 
   return (
     <div className="w-full min-h-screen p-0 m-0 text-black font-sans bg-white flex flex-col justify-start">

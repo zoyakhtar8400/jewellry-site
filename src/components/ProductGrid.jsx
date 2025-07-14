@@ -39,7 +39,7 @@ const ProductGrid = () => {
   }
 
   return (
-    <div className="bg-gray-50  mt-4">
+    <div className="bg-white mt-4">
       <div className="max-w-7xl mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {products.map((product) => (
@@ -102,11 +102,17 @@ const ProductGrid = () => {
                   </div>
                 </div>
                 {/* Add to Cart Button */}
+
                 <button
                   className="w-full bg-black hover:bg-gray-700 text-white font-thin py-2 px-4 rounded-md transition-colors duration-200"
                   onClick={(e) => {
                     e.stopPropagation();
-                    // Add to cart logic here
+                    // Add to localStorage
+                    const existingCart = JSON.parse(
+                      localStorage.getItem("cart") || "[]"
+                    );
+                    const updatedCart = [...existingCart, product];
+                    localStorage.setItem("cart", JSON.stringify(updatedCart));
                   }}
                   style={{
                     fontFamily: '"Inter", "Helvetica Neue", Arial, sans-serif',

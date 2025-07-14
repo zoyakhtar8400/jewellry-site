@@ -11,9 +11,13 @@ const Home = () => {
       <CircularDivs />
       <Banner />
       {/* Category Names Section */}
+      {/* Category Names Section */}
       <div className="bg-gray-50 py-8">
-        <div className="">
-          <div className="flex justify-center items-center flex-wrap gap-6">
+        <div className="overflow-x-auto">
+          <div
+            className="flex gap-6 pb-4 md:justify-center md:flex-wrap md:pb-0"
+            style={{ minWidth: "max-content" }}
+          >
             {[
               "Western",
               "Demi Fine",
@@ -26,11 +30,11 @@ const Home = () => {
             ].map((name, index) => (
               <div
                 key={index}
-                className="bg-[#ffe8de] border-2 border-cream-200 rounded-full w-42 h-42 flex items-center justify-center text-center cursor-pointer hover:shadow-md transition-shadow"
+                className="bg-[#ffe8de] border-2 border-cream-200 rounded-full w-32 h-32 flex-shrink-0 flex items-center justify-center text-center cursor-pointer hover:shadow-md transition-shadow"
                 style={{ backgroundColor: "#ffe8de" }}
               >
                 <span
-                  className="text-gray-800 font-medium text-lg px-2"
+                  className="text-gray-800 font-medium text-sm md:text-lg px-2"
                   style={{ fontFamily: "cursive" }}
                 >
                   {name}
