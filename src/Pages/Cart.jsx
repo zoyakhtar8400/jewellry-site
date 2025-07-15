@@ -57,7 +57,7 @@ const Cart = () => {
   return (
     <div className="w-full min-h-screen bg-white text-black font-sans">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 mb-16">
-        <div className="cart-items w-full max-w-[1600px] mx-auto mb-2">
+        <div className="cart-items w-full max-w-[1600px] mx-auto mb-2 ">
           <div className="flex justify-between items-center px-4">
             <div className="text-sm sm:text-base text-gray-700 ml-0">
               <span className="font-semibold text-black">Cart</span>
@@ -73,7 +73,7 @@ const Cart = () => {
         </div>
 
         {cartItems.length > 0 ? (
-          <div className="overflow-x-auto border border-red-100 rounded-xl">
+          <div className="overflow-x-auto border border-red-100 ">
             <table className="w-full text-sm sm:text-base table-auto">
               <thead className="bg-red-50 text-black">
                 <tr className="text-left">
@@ -163,7 +163,7 @@ const Cart = () => {
         )}
 
         {cartItems.length > 0 && (
-          <div className="w-full sm:max-w-md ml-auto mt-12 bg-white rounded-2xl shadow-lg p-6 border border-red-100">
+          <div className="w-full sm:max-w-md ml-auto mt-12 bg-whit  p-6 border border-red-100">
             <h2 className="text-xl font-bold text-[#f43249] mb-4">
               Cart Totals
             </h2>
