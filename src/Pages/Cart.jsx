@@ -11,6 +11,14 @@ const Cart = () => {
     setCartItems(storedCart);
   }, []);
 
+  const removeFromCart = (productId) => {
+    const updatedCart = cartItems.filter((item) => item._id !== productId);
+    setCartItems(updatedCart);
+    localStorage.setItem("cartItems", JSON.stringify(updatedCart));
+
+    // Trigger storage event to update ProductGrid buttons
+    window.dispatchEvent(new Event("storage"));
+  };
   const handleRemove = (id) => {
     const updated = cartItems.filter((item) => item._id !== id);
     setCartItems(updated);
@@ -123,7 +131,7 @@ const Cart = () => {
                       </td>
                       <td className="px-4 py-4">
                         <button
-                          onClick={() => handleRemove(item._id)}
+                          onClick={() => removeFromCart(item._id)}
                           className="text-red-600 text-xl font-bold"
                         >
                           ×

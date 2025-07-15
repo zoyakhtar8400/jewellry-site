@@ -9,6 +9,7 @@ const ProductGrid = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [wishlist, setWishlist] = useState(new Set());
+  const [cartItems, setCartItems] = useState([]);
   const navigate = useNavigate();
 
   const toggleWishlist = (productId) => {
@@ -32,6 +33,26 @@ const ProductGrid = () => {
         setLoading(false);
         setProducts([]);
       });
+  }, []);
+
+  useEffect(() => {
+    const cart = JSON.parse(localStorage.getItem("cartItems")) || [];
+    setCartItems(cart);
+  }, []);
+
+  // In ProductGrid.jsx, update the useEffect
+  useEffect(() => {
+    const updateCartItems = () => {
+      const cart = JSON.parse(localStorage.getItem("cartItems")) || [];
+      setCartItems(cart);
+    };
+    // Initial load
+    updateCartItems();
+
+    // Listen for storage changes
+    window.addEventListener("storage", updateCartItems);
+
+    return () => window.removeEventListener("storage", updateCartItems);
   }, []);
 
   if (loading) {
@@ -107,18 +128,40 @@ const ProductGrid = () => {
                   className="w-full bg-black hover:bg-gray-700 text-white font-thin py-2 px-4 rounded-md transition-colors duration-200"
                   onClick={(e) => {
                     e.stopPropagation();
-                    // Add to localStorage
-                    const existingCart = JSON.parse(
-                      localStorage.getItem("cart") || "[]"
+
+                    const isInCart = cartItems.some(
+                      (item) => item._id === product._id
                     );
-                    const updatedCart = [...existingCart, product];
-                    localStorage.setItem("cart", JSON.stringify(updatedCart));
+
+                    if (isInCart) {
+                      // Navigate to cart if already in cart
+                      navigate("/cart");
+                    } else {
+                      // Add to cart logic
+                      const cart =
+                        JSON.parse(localStorage.getItem("cartItems")) || [];
+                      const index = cart.findIndex(
+                        (item) => item._id === product._id
+                      );
+
+                      if (index > -1) {
+                        cart[index].quantity += 1;
+                      } else {
+                        cart.push({ ...product, quantity: 1 });
+                      }
+
+                      localStorage.setItem("cartItems", JSON.stringify(cart));
+                      setCartItems(cart); // Update state to change button text
+                      alert("Item added to cart!");
+                    }
                   }}
                   style={{
                     fontFamily: '"Inter", "Helvetica Neue", Arial, sans-serif',
                   }}
                 >
-                  Add to Cart
+                  {cartItems.some((item) => item._id === product._id)
+                    ? "Go to Cart"
+                    : "Add to Cart"}
                 </button>
               </div>
             </div>

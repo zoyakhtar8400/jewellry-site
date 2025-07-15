@@ -353,7 +353,7 @@ const Description = ({ product }) => {
         </button>
         <button
           onClick={handleAddToWishlist}
-          className="border-2 border-black text-black py-3 px-6 rounded-lg font-semibold"
+          className="border border-black  text-black hover:bg-gray-200   py-3 px-6 rounded-lg font-semibold"
         >
           Add to Wishlist
         </button>
