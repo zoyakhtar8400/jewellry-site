@@ -1,201 +1,200 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import BottomNav from "../Slidess/BottomNav";
 
 const Cart = () => {
-  const unitPrice = 434;
-  const tax = parseFloat((unitPrice * 0.09).toFixed(2));
-  const total = parseFloat((unitPrice + tax).toFixed(2));
-  const [cartItems, setCartItems] = useState([
-    {
-      id: 1,
-      name: "Test Patisa",
-      description: "18K Gold Plated Necklace",
-      image: "/assets/test-patisa.jpg",
-      price: 434,
-      weight: 12.5, // grams
-    },
-  ]);
-  const totalWeight = cartItems.reduce((sum, item) => sum + item.weight, 0);
-  const handleRemove = (id) => {
-    setCartItems((prev) => prev.filter((item) => item.id !== id));
-  };
   const navigate = useNavigate();
+  const [cartItems, setCartItems] = useState([]);
 
   useEffect(() => {
-    const savedCart = JSON.parse(localStorage.getItem("cart") || "[]");
-    setCartItems(savedCart);
+    const storedCart = JSON.parse(localStorage.getItem("cartItems")) || [];
+    setCartItems(storedCart);
   }, []);
 
+  const handleRemove = (id) => {
+    const updated = cartItems.filter((item) => item._id !== id);
+    setCartItems(updated);
+    localStorage.setItem("cartItems", JSON.stringify(updated));
+  };
+
+  const increaseQuantity = (id) => {
+    const updated = cartItems.map((item) =>
+      item._id === id ? { ...item, quantity: item.quantity + 1 } : item
+    );
+    setCartItems(updated);
+    localStorage.setItem("cartItems", JSON.stringify(updated));
+  };
+
+  const decreaseQuantity = (id) => {
+    const updated = cartItems.map((item) =>
+      item._id === id && item.quantity > 1
+        ? { ...item, quantity: item.quantity - 1 }
+        : item
+    );
+    setCartItems(updated);
+    localStorage.setItem("cartItems", JSON.stringify(updated));
+  };
+
+  const subtotal = cartItems.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0
+  );
+  const tax = parseFloat((subtotal * 0.18).toFixed(2));
+  const total = parseFloat((subtotal + tax).toFixed(2));
+  const totalWeight = cartItems.reduce(
+    (sum, item) => sum + (item.weight || 0) * item.quantity,
+    0
+  );
+
   return (
-    <div className="w-full min-h-screen p-0 m-0 text-black font-sans bg-white flex flex-col justify-start">
-      <div className="flex flex-col items-end mt-8 mb-4 pr-4 sm:pr-8 md:pr-16 lg:pr-32 xl:pr-64">
-        <span
-          className="text-6xl font-bold text-black mb-2 drop-shadow-lg"
-          style={{
-            fontFamily: '"Dancing Script", "Brush Script MT", cursive',
-            letterSpacing: "0.05em",
-          }}
-        >
-          Rubans
-        </span>
-      </div>
-      <div className="flex flex-col flex-1 w-full max-w-[1600px] mx-auto px-2 sm:px-4 md:px-8 lg:px-16 xl:px-32 pb-10">
-        <h1 className="text-base sm:text-xl font-extrabold mb-4 sm:mb-8 text-left text-[#f43249] tracking-wide drop-shadow-lg pl-2 sm:pl-4">
-          Home-cart
-        </h1>
-        <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold mb-4 sm:mb-8 text-left text-black tracking-wide drop-shadow-lg pl-2 sm:pl-4">
-          Product Cart
-        </h1>
-        {/* Cart Table */}
-        {cartItems.length > 0 && (
-          <div className="w-full bg-white rounded-2xl shadow-xl p-2 sm:p-4 md:p-6 border border-pink-100 min-h-[350px] max-w-[1100px] mx-auto overflow-x-auto">
-            <table className="min-w-full text-left text-xs sm:text-sm md:text-base">
-              <thead className="bg-pink-50">
-                <tr>
-                  <th className="p-2 sm:p-4 font-bold text-pink-700 text-xs sm:text-lg">
-                    Image
-                  </th>
-                  <th className="p-2 sm:p-4 font-bold text-pink-700 text-xs sm:text-lg">
-                    Product Name
-                  </th>
-                  <th className="p-2 sm:p-4 font-bold text-pink-700 text-xs sm:text-lg">
-                    Unit Price
-                  </th>
-                  <th className="p-2 sm:p-4 font-bold text-pink-700 text-xs sm:text-lg">
-                    Weight (g)
-                  </th>
-                  <th className="p-2 sm:p-4 font-bold text-pink-700 text-xs sm:text-lg">
-                    Remove
-                  </th>
+    <div className="w-full min-h-screen bg-white text-black font-sans">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 mb-16">
+        <div className="cart-items w-full max-w-[1600px] mx-auto mb-2">
+          <div className="flex justify-between items-center px-4">
+            <div className="text-sm sm:text-base text-gray-700 ml-0">
+              <span className="font-semibold text-black">Cart</span>
+              <span className="mx-2 text-gray-300">—</span>
+              <span className="text-gray-400">Cart Items</span>
+            </div>
+            <div className="flex justify-end mt-2 mb-4 pr-14">
+              <h2 className="text-4xl sm:text-3xl md:text-4xl lg:text-6xl cursor-pointer font-light bg-gradient-to-r from-amber-400 to-rose-800 bg-clip-text text-transparent">
+                Glitzzera
+              </h2>
+            </div>
+          </div>
+        </div>
+
+        {cartItems.length > 0 ? (
+          <div className="overflow-x-auto border border-red-100 rounded-xl">
+            <table className="w-full text-sm sm:text-base table-auto">
+              <thead className="bg-red-50 text-black">
+                <tr className="text-left">
+                  <th className="px-4 py-3">Images</th>
+                  <th className="px-4 py-3">Name</th>
+                  <th className="px-4 py-3">Unit Price</th>
+                  <th className="px-4 py-3">Quantity</th>
+                  <th className="px-4 py-3">Total</th>
+                  <th className="px-4 py-3">Remove</th>
                 </tr>
               </thead>
               <tbody>
-                {cartItems.map((item) => (
-                  <tr
-                    key={item.id}
-                    className="border-t hover:bg-pink-50 transition"
-                  >
-                    <td className="p-2 sm:p-4">
-                      <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-28 md:h-28 rounded-xl overflow-hidden border-2 border-pink-200 shadow">
+                {cartItems.map((item) => {
+                  let rawImage = item.image || item.images?.[0] || "";
+                  let cleanImage = rawImage.replace(".jpg.jpg", ".jpg");
+
+                  return (
+                    <tr key={item._id} className="border-t hover:bg-red-50">
+                      <td className="px-4 py-4">
                         <img
-                          src={item.image}
-                          alt={item.name}
-                          className="w-full h-full object-cover"
+                          src={cleanImage || "/placeholder.jpg"}
+                          alt={item.name || "Product image"}
+                          className="w-20 h-20 object-cover rounded-lg border border-red-200"
+                          onError={(e) => {
+                            e.target.onerror = null;
+                            e.target.src = "/placeholder.jpg";
+                          }}
                         />
-                      </div>
-                    </td>
-                    <td className="p-2 sm:p-4 align-middle">
-                      <div className="font-semibold text-xs sm:text-base md:text-lg text-gray-800">
-                        {item.name}
-                      </div>
-                      <div className="text-[10px] sm:text-xs text-gray-400 mt-1">
-                        {item.description}
-                      </div>
-                    </td>
-                    <td className="p-2 sm:p-4 align-middle font-bold text-pink-700 text-xs sm:text-lg">
-                      INR {item.price}
-                    </td>
-                    <td className="p-2 sm:p-4 align-middle text-center">
-                      {item.weight}
-                    </td>
-                    <td className="p-2 sm:p-4 align-middle text-center">
-                      <button
-                        onClick={() => handleRemove(item.id)}
-                        className="text-red-500 hover:text-red-700 font-bold text-base sm:text-lg"
-                        title="Remove"
-                      >
-                        &times;
-                      </button>
-                    </td>
-                  </tr>
-                ))}
+                      </td>
+                      <td className="px-4 py-4 font-medium">
+                        {item.name || item.longTitle}
+                      </td>
+                      <td className="px-4 py-4">INR {item.price}</td>
+                      <td className="px-4 py-4">
+                        <div className="flex items-center justify-between w-28 h-10 border border-gray-300 rounded-md px-2">
+                          <button
+                            onClick={() => decreaseQuantity(item._id)}
+                            className="text-red-600 font-bold text-lg px-2"
+                          >
+                            −
+                          </button>
+                          <span className="text-base font-medium">
+                            {item.quantity}
+                          </span>
+                          <button
+                            onClick={() => increaseQuantity(item._id)}
+                            className="text-red-600 font-bold text-lg px-2"
+                          >
+                            +
+                          </button>
+                        </div>
+                      </td>
+                      <td className="px-4 py-4">
+                        INR {(item.quantity * item.price).toFixed(2)}
+                      </td>
+                      <td className="px-4 py-4">
+                        <button
+                          onClick={() => handleRemove(item._id)}
+                          className="text-red-600 text-xl font-bold"
+                        >
+                          ×
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
-        )}
-        {cartItems.length === 0 && (
-          <div className="flex flex-col items-center justify-center gap-2 sm:gap-4 w-full bg-white rounded-2xl shadow-xl p-4 sm:p-6 border border-pink-100 min-h-[200px] sm:min-h-[350px]">
-            <span className="text-xl sm:text-3xl md:text-4xl font-bold text-red-500 mb-2 text-center">
-              Your Cart is Empty! 💍
-            </span>
-            <span className="text-sm sm:text-lg md:text-xl text-gray-500 max-w-xl text-center">
-              It looks like your cart is missing some sparkle! Explore our
-              exquisite collection of traditional and modern jewelry, from
-              dazzling gold-plated necklaces to elegant earrings and statement
-              rings. Add your favorites now and shine with timeless beauty.
-            </span>
-            <span className="text-lg sm:text-2xl mt-2 text-center">
-              ✨🛒 Start Shopping &amp; Adorn Yourself! ✨
-            </span>
+        ) : (
+          <div className="mt-12 text-center bg-white p-6 border border-red-100 rounded-xl">
+            <h2 className="text-2xl font-bold text-[#f43249] mb-2">
+              Your Cart is Empty!
+            </h2>
+            <p className="text-gray-600 mb-4">
+              Your jewelry box is waiting to be filled! 💍
+              <br />
+              Explore timeless pieces – from elegant earrings to dazzling rings.
+            </p>
+            <button
+              onClick={() => navigate("/")}
+              className="bg-[#f43249] hover:opacity-90 text-white px-6 py-2 rounded-lg font-semibold"
+            >
+              Continue Shopping
+            </button>
           </div>
         )}
-        {/* Cart Totals */}
-        <div className="w-full max-w-full sm:max-w-md bg-white rounded-2xl shadow-xl p-4 sm:p-8 border border-pink-100 h-fit min-h-[200px] sm:min-h-[350px] mt-8 ml-auto">
-          <h2 className="text-lg sm:text-2xl font-bold mb-4 sm:mb-6 text-[#f43249] text-left tracking-wide">
-            Cart Totals
-          </h2>
 
-          {/* Your Order Section */}
-          <div
-            className="mb-6"
-            style={{ minHeight: "auto", height: "auto" }}
-          ></div>
-          <div className="flex justify-between mb-2 sm:mb-4 text-base sm:text-lg">
-            <span>Subtotal</span>
-            <span className="font-semibold">
-              INR{" "}
-              {cartItems.reduce((sum, item) => sum + item.price, 0).toFixed(2)}
-            </span>
+        {cartItems.length > 0 && (
+          <div className="w-full sm:max-w-md ml-auto mt-12 bg-white rounded-2xl shadow-lg p-6 border border-red-100">
+            <h2 className="text-xl font-bold text-[#f43249] mb-4">
+              Cart Totals
+            </h2>
+            <table className="w-full text-sm sm:text-base border border-gray-200">
+              <tbody>
+                <tr className="border-b">
+                  <td className="py-2 px-4 font-medium">Subtotal</td>
+                  <td className="py-2 px-4 text-right">
+                    INR {subtotal.toFixed(2)}
+                  </td>
+                </tr>
+                <tr className="border-b">
+                  <td className="py-2 px-4 font-medium">Tax (18%)</td>
+                  <td className="py-2 px-4 text-right">INR {tax.toFixed(2)}</td>
+                </tr>
+                <tr className="border-b">
+                  <td className="py-2 px-4 font-medium">Total Weight</td>
+                  <td className="py-2 px-4 text-right">
+                    {totalWeight.toFixed(1)} g
+                  </td>
+                </tr>
+                <tr>
+                  <td className="py-3 px-4 font-bold text-lg">Total</td>
+                  <td className="py-3 px-4 text-right font-bold text-lg text-[#f43249]">
+                    INR {total.toFixed(2)}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <button
+              onClick={() => navigate("/checkout")}
+              className="w-full mt-6 bg-[#f43249] hover:opacity-90 text-white font-semibold py-3 rounded-lg"
+            >
+              Proceed to Checkout
+            </button>
           </div>
-          <div className="flex justify-between mb-2 sm:mb-4 text-base sm:text-lg">
-            <span>
-              Tax <span className="text-xs">(9%)</span>
-            </span>
-            <span className="font-semibold">
-              INR{" "}
-              {(
-                cartItems.reduce((sum, item) => sum + item.price, 0) * 0.09
-              ).toFixed(2)}
-            </span>
-          </div>
-          <div className="flex justify-between mb-2 sm:mb-4 text-base sm:text-lg">
-            <span>Total</span>
-            <span className="font-semibold">
-              INR{" "}
-              {(
-                cartItems.reduce((sum, item) => sum + item.price, 0) * 1.09
-              ).toFixed(2)}
-            </span>
-          </div>
-          <div className="flex justify-between mb-2 sm:mb-4 text-base sm:text-lg">
-            <span>Total Weight</span>
-            <span className="font-semibold">{totalWeight} g</span>
-          </div>
-          <div className="flex justify-between font-bold text-lg sm:text-xl border-t pt-4 mt-4">
-            <span>Final Total</span>
-            <span className="text-[#f43249]">
-              INR{" "}
-              {(
-                cartItems.reduce((sum, item) => sum + item.price, 0) * 1.09
-              ).toFixed(2)}
-            </span>
-          </div>
-          <button
-            type="button"
-            className={`w-full mt-6 sm:mt-8 bg-gradient-to-r from-[#f43249] to-red-500 text-white py-2 sm:py-3 px-4 sm:px-6 rounded-lg hover:opacity-90 font-bold text-base sm:text-lg shadow transition ${
-              cartItems.length === 0
-                ? "pointer-events-none opacity-50 cursor-not-allowed"
-                : ""
-            }`}
-            onClick={() => cartItems.length > 0 && navigate("/checkout")}
-            disabled={cartItems.length === 0}
-            tabIndex={cartItems.length === 0 ? -1 : 0}
-          >
-            Proceed to Checkout
-          </button>
-        </div>
+        )}
       </div>
+
       <BottomNav />
     </div>
   );
