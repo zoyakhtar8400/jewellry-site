@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import BottomNav from "../Slidess/BottomNav";
 
 const Wishlist = () => {
@@ -8,6 +8,7 @@ const Wishlist = () => {
   const [error, setError] = useState(null);
   const [cartItems, setCartItems] = useState([]);
   const userId = "687211c0889794ff996ce1f7";
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchWishlist = async () => {
@@ -29,6 +30,21 @@ const Wishlist = () => {
     fetchWishlist();
   }, [userId]);
 
+  useEffect(() => {
+    const updateCartItems = () => {
+      const cart = JSON.parse(localStorage.getItem("cartItems")) || [];
+      setCartItems(cart);
+    };
+
+    // Initial load
+    updateCartItems();
+
+    // Listen for storage changes
+    window.addEventListener("storage", updateCartItems);
+
+    return () => window.removeEventListener("storage", updateCartItems);
+  }, []);
+
   const handleRemove = async (wishlistItemId) => {
     setWishlist((prev) => prev.filter((item) => item._id !== wishlistItemId));
     try {
@@ -49,17 +65,26 @@ const Wishlist = () => {
   };
 
   const handleAddToCart = (product) => {
-    const cart = JSON.parse(localStorage.getItem("cartItems")) || [];
-    const index = cart.findIndex((item) => item._id === product._id);
+    const isInCart = cartItems.some((item) => item._id === product._id);
 
-    if (index > -1) {
-      cart[index].quantity += 1;
+    if (isInCart) {
+      // Navigate to cart if already in cart
+      navigate("/cart");
     } else {
-      cart.push({ ...product, quantity: 1 });
-    }
+      // Add to cart logic
+      const cart = JSON.parse(localStorage.getItem("cartItems")) || [];
+      const index = cart.findIndex((item) => item._id === product._id);
 
-    localStorage.setItem("cartItems", JSON.stringify(cart));
-    alert("Item added to cart!");
+      if (index > -1) {
+        cart[index].quantity += 1;
+      } else {
+        cart.push({ ...product, quantity: 1 });
+      }
+
+      localStorage.setItem("cartItems", JSON.stringify(cart));
+      setCartItems(cart); // Update state to change button text
+      alert("Item added to cart!");
+    }
   };
 
   if (loading) {
@@ -119,7 +144,11 @@ const Wishlist = () => {
                   className="w-full mt-3 bg-black text-white py-2 text-sm"
                   onClick={() => handleAddToCart(item.productId)}
                 >
-                  Add to Cart
+                  {cartItems.some(
+                    (cartItem) => cartItem._id === item.productId._id
+                  )
+                    ? "Go to Cart"
+                    : "Add to Cart"}
                 </button>
                 <button
                   className="w-full mt-2 bg-red-500 text-white py-2 text-sm rounded"

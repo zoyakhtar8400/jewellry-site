@@ -1,7 +1,86 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const CheckoutPage = () => {
   const [cartItems, setCartItems] = useState([]);
+  const [formData, setFormData] = useState({
+    addressType: "",
+    firstName: "",
+    lastName: "",
+    streetAddress: "",
+    apartment: "",
+    city: "",
+    state: "",
+    postcode: "",
+    phone: "",
+    email: "",
+    orderNotes: "",
+  });
+  const [isPlacingOrder, setIsPlacingOrder] = useState(false);
+  const navigate = useNavigate();
+
+  const handleInputChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handlePlaceOrder = async () => {
+    setIsPlacingOrder(true);
+
+    try {
+      // Prepare products from cart
+      const products = cartItems.map((item) => ({
+        productId: item._id,
+        quantity: item.quantity || 1,
+        size: item.selectedSize || undefined,
+      }));
+
+      const orderData = {
+        userId: "687211c0889794ff996ce1f7", // Replace with actual user ID
+        addressId: "64fabc9999999999abc12345", // You'll need to create address first
+        products: products,
+        paymentInfo: {
+          method: "Online",
+          transactionId: `TXN${Date.now()}`,
+          status: "Success",
+        },
+        orderStatus: "Processing",
+        totalAmount: total,
+        discount: 0,
+        isPaid: true,
+      };
+
+      const response = await fetch(
+        "https://glitzzera-backend.vercel.app/api/orders",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(orderData),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to place order");
+      }
+
+      const result = await response.json();
+
+      // Clear cart after successful order
+      localStorage.removeItem("cartItems");
+
+      alert("Order placed successfully!");
+      navigate("/"); // Redirect to home or order confirmation page
+    } catch (error) {
+      console.error("Error placing order:", error);
+      alert("Failed to place order. Please try again.");
+    } finally {
+      setIsPlacingOrder(false);
+    }
+  };
 
   useEffect(() => {
     const stored = localStorage.getItem("cartItems");
@@ -22,10 +101,10 @@ const CheckoutPage = () => {
   const total = parseFloat((subtotal + tax).toFixed(2));
 
   return (
-    <div className="w-full min-h-screen p-0 m-0 text-black font-sans bg-white flex flex-col justify-start text-base sm:text-[1.1rem] md:text-[1.2rem] lg:text-[1.35rem] mt-4 sm:mt-8">
-      <div className="w-full max-w-[1600px] mx-auto px-2 sm:px-4 md:px-8 lg:px-16 xl:px-32 mb-2">
+    <div className="  text-gray-800 font-sans bg-white flex flex-col  text-base sm:text-[1.1rem] md:text-[1.2rem] lg:text-[1.35rem] mt-4 sm:mt-8">
+      <div className=" mx-auto px-2 sm:px-4 md:px-8 lg:px-16 xl:px-32 mb-2 ">
         <div className="flex justify-between items-center">
-          <div className="text-sm sm:text-base text-gray-700">
+          <div className="text-sm sm:text-base text-gray-700 ">
             <span className="font-semibold text-black">Home</span>
             <span className="mx-2 text-gray-300">—</span>
             <span className="text-gray-400">Checkout</span>
@@ -39,13 +118,13 @@ const CheckoutPage = () => {
         </div>
       </div>
 
-      <div className="flex flex-col md:flex-row gap-4 sm:gap-8 w-full max-w-[1600px] mx-auto px-2 sm:px-4 md:px-8 lg:px-16 xl:px-32 pb-6 sm:pb-10">
+      <div className="flex flex-col md:flex-row gap-4  sm:gap-8 w-full max-w-[1400px] mx-auto px-2 sm:px-4 md:px-8 lg:px-16 xl:px-20 pb-6 sm:pb-10 ">
         {/* Billing Form */}
-        <div className="w-full sm:max-w-md bg-white rounded-2xl border border-pink-100 p-4 sm:p-6 md:p-8">
-          <h2 className="text-base sm:text-lg font-semibold mb-1">
+        <div className="w-full flex-1 sm:max-w-md border p-6 rounded-lg border-gray-200 ">
+          <h2 className="text-base sm:text-2xl font-semibold mb-2">
             Saved Addresses
           </h2>
-          <h3 className="font-medium mb-4 text-2xl sm:text-3xl">
+          <h3 className="text-base sm:text-2xl font-semibold mb-2">
             Billing Details
           </h3>
 
@@ -81,6 +160,9 @@ const CheckoutPage = () => {
                 </label>
                 <input
                   type="text"
+                  name="firstName"
+                  value={formData.firstName}
+                  onChange={handleInputChange}
                   className="w-full h-10 px-3 py-2 border rounded text-sm"
                 />
               </div>
@@ -166,64 +248,88 @@ const CheckoutPage = () => {
         </div>
 
         {/* Your Order */}
-        <div className="flex-1 bg-white rounded-2xl border border-pink-100 p-4 sm:p-6 md:p-8">
-          <h2 className="text-lg sm:text-2xl font-bold mb-4 text-[#f43249]">
+        <div className="w-full lg:w-1/2 p-4 sm:p-6 border border-pink-400 rounded-lg  max-h-max ml-0 md:ml-20">
+          <h2 className="text-base sm:text-lg md:text-2xl font-bold mb-4 text-[#f43249]">
             Your Order
           </h2>
 
-          <table className="w-full text-sm border border-gray-300">
-            <thead className="bg-gray-100">
-              <tr>
-                <th className="py-2 px-4 border">Product</th>
-                <th className="py-2 px-4 border">Qty</th>
-                <th className="py-2 px-4 border">Total</th>
-              </tr>
-            </thead>
-            <tbody>
-              {cartItems.length === 0 ? (
+          <div className="overflow-x-auto">
+            <table className="w-full text-xs sm:text-sm border-gray-300">
+              <thead className="bg-gray-100">
                 <tr>
-                  <td colSpan="3" className="text-center text-gray-400 py-6">
-                    No items in cart
-                  </td>
+                  <th className="py-2 px-2 sm:px-4 text-left">Product</th>
+                  <th className="py-2 px-2 sm:px-4 text-center">Qty</th>
+                  <th className="py-2 px-2 sm:px-4 text-right">Total</th>
                 </tr>
-              ) : (
-                cartItems.map((item) => (
-                  <tr key={item._id || item.id}>
-                    <td className="border px-4 py-2">
-                      {item.name || item.longTitle}
-                    </td>
-                    <td className="border px-4 py-2">{item.quantity || 1}</td>
-                    <td className="border px-4 py-2">
-                      INR {(item.price * (item.quantity || 1)).toFixed(2)}
+              </thead>
+              <tbody>
+                {cartItems.length === 0 ? (
+                  <tr>
+                    <td
+                      colSpan="3"
+                      className="text-center text-gray-400 py-6 text-xs sm:text-sm"
+                    >
+                      No items in cart
                     </td>
                   </tr>
-                ))
-              )}
-              <tr>
-                <td colSpan="2" className="border px-4 py-2 font-semibold">
-                  Subtotal
-                </td>
-                <td className="border px-4 py-2">INR {subtotal.toFixed(2)}</td>
-              </tr>
-              <tr>
-                <td colSpan="2" className="border px-4 py-2 font-semibold">
-                  Tax (18%)
-                </td>
-                <td className="border px-4 py-2">INR {tax.toFixed(2)}</td>
-              </tr>
-              <tr>
-                <td colSpan="2" className="border px-4 py-2 font-bold">
-                  Total
-                </td>
-                <td className="border px-4 py-2 font-bold text-[#f43249]">
-                  INR {total.toFixed(2)}
-                </td>
-              </tr>
-            </tbody>
-          </table>
+                ) : (
+                  cartItems.map((item) => (
+                    <tr key={item._id || item.id}>
+                      <td className="border-t border-gray-500 px-2 sm:px-4 py-2 text-xs sm:text-sm">
+                        {item.name || item.longTitle}
+                      </td>
+                      <td className="border-t border-gray-500 px-2 sm:px-4 py-2 text-center text-xs sm:text-sm">
+                        {item.quantity || 1}
+                      </td>
+                      <td className="border-t border-gray-500 px-2 sm:px-4 py-2 text-right text-xs sm:text-sm">
+                        INR {(item.price * (item.quantity || 1)).toFixed(2)}
+                      </td>
+                    </tr>
+                  ))
+                )}
+                <tr>
+                  <td
+                    colSpan="2"
+                    className="border-t border-gray-500 px-2 sm:px-4 py-2 text-xs sm:text-sm"
+                  >
+                    Subtotal
+                  </td>
+                  <td className="border-t border-gray-500 px-2 sm:px-4 py-2 text-right text-xs sm:text-sm">
+                    INR {subtotal.toFixed(2)}
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    colSpan="2"
+                    className="border-t border-gray-500 px-2 sm:px-4 py-2 text-xs sm:text-sm"
+                  >
+                    Tax (18%)
+                  </td>
+                  <td className="border-t border-gray-500 px-2 sm:px-4 py-2 text-right text-xs sm:text-sm">
+                    INR {tax.toFixed(2)}
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    colSpan="2"
+                    className="border-t border-gray-500 px-2 sm:px-4 py-2 text-sm sm:text-base font-semibold"
+                  >
+                    Total
+                  </td>
+                  <td className="border-t border-gray-500 px-2 sm:px-4 py-2 text-right text-sm sm:text-base font-semibold">
+                    INR {total.toFixed(2)}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
 
-          <button className="w-full mt-6 bg-[#f43249] text-white font-semibold py-3 rounded hover:opacity-90">
-            Place Order
+          <button
+            onClick={handlePlaceOrder}
+            disabled={isPlacingOrder}
+            className="w-full mt-4 text-xs sm:text-sm bg-[#f43249] text-white font-semibold py-2 sm:py-3 rounded hover:opacity-90 disabled:opacity-50"
+          >
+            {isPlacingOrder ? "Placing Order..." : "Place Order"}
           </button>
         </div>
       </div>
