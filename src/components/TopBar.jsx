@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   FaBars,
@@ -13,7 +13,27 @@ import SearchModal from "../Pages/SearchModal";
 const TopBar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [cartCount, setCartCount] = useState(0);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const updateCartCount = () => {
+      const cart = JSON.parse(localStorage.getItem("cartItems") || "[]");
+      const totalCount = cart.reduce(
+        (sum, item) => sum + (item.quantity || 1),
+        0
+      );
+      setCartCount(totalCount);
+    };
+
+    // Initial load
+    updateCartCount();
+
+    // Listen for storage changes
+    window.addEventListener("storage", updateCartCount);
+
+    return () => window.removeEventListener("storage", updateCartCount);
+  }, []);
 
   return (
     <>
@@ -59,13 +79,14 @@ const TopBar = () => {
             >
               <FaHeart className="w-3 h-3 sm:w-5 sm:h-5" />
             </button>
+
             <button
               className="text-gray-700 hover:text-red-700 p-1 sm:p-2 relative cursor-pointer"
               onClick={() => navigate("/cart")}
             >
               <FaShoppingCart className="w-3 h-3 sm:w-5 sm:h-5" />
-              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-3 w-3 sm:h-4 sm:w-4 flex items-center justify-center">
-                0
+              <span className="absolute md:-top-1  -top-2 -right-1  bg-red-500 text-white text-xs rounded-full h-3 w-3  p-2 flex items-center justify-center">
+                {cartCount}
               </span>
             </button>
           </div>

@@ -5,6 +5,7 @@ import ImageViewer from "../components/ImageViewer";
 import Description from "../components/Description";
 import Suggestions from "../components/Suggestions";
 import BestSellers from "../components/BestSellers";
+import BottomNav from "../Slidess/BottomNav";
 
 const ProductDescriptionPage = () => {
   const { id } = useParams();
@@ -61,6 +62,7 @@ const ProductDescriptionPage = () => {
         <Suggestions />
         <BestSellers />
       </div>
+      <BottomNav />
     </>
   );
 };

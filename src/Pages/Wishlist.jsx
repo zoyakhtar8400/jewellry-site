@@ -45,6 +45,29 @@ const Wishlist = () => {
     return () => window.removeEventListener("storage", updateCartItems);
   }, []);
 
+  // In your Wishlist component, update the fetchWishlist function
+  const fetchWishlist = async () => {
+    try {
+      const response = await fetch(
+        `https://glitzzera-backend.vercel.app/api/wishlists/${userId}`,
+        {
+          // Add timeout to prevent long waiting
+          signal: AbortSignal.timeout(10000), // 10 second timeout
+        }
+      );
+      if (!response.ok) throw new Error("Failed to fetch wishlist");
+      const data = await response.json();
+      setWishlist(data);
+    } catch (err) {
+      console.error("Error fetching wishlist:", err);
+      setError("Failed to load wishlist. Server may be down or unreachable.");
+      // Use empty array as fallback
+      setWishlist([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleRemove = async (wishlistItemId) => {
     setWishlist((prev) => prev.filter((item) => item._id !== wishlistItemId));
     try {

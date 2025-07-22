@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { FaHeart } from "react-icons/fa";
+import { FaHeart, FaTrash, FaShoppingCart } from "react-icons/fa";
 
 const API_URL = "https://glitzzera-backend.vercel.app/api/products";
 
@@ -124,45 +124,122 @@ const ProductGrid = () => {
                 </div>
                 {/* Add to Cart Button */}
 
-                <button
-                  className="w-full bg-black hover:bg-gray-700 text-white font-thin py-2 px-4 rounded-md transition-colors duration-200"
-                  onClick={(e) => {
-                    e.stopPropagation();
+                {/* Add to Cart Button or Quantity Controls */}
+                {cartItems.some((item) => item._id === product._id) ? (
+                  <div className="flex items-center justify-between w-full  p-2">
+                    {/* Cart Icon - Left */}
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate("/cart");
+                      }}
+                      className="text-red-600 hover:text-red-800 "
+                    >
+                      <FaShoppingCart className="w-4 h-4" />
+                    </button>
 
-                    const isInCart = cartItems.some(
-                      (item) => item._id === product._id
-                    );
+                    {/* Quantity Controls - Middle */}
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          const cart =
+                            JSON.parse(localStorage.getItem("cartItems")) || [];
+                          const index = cart.findIndex(
+                            (item) => item._id === product._id
+                          );
 
-                    if (isInCart) {
-                      // Navigate to cart if already in cart
-                      navigate("/cart");
-                    } else {
-                      // Add to cart logic
+                          if (index > -1) {
+                            if (cart[index].quantity > 1) {
+                              cart[index].quantity -= 1;
+                            } else {
+                              cart.splice(index, 1);
+                            }
+                            localStorage.setItem(
+                              "cartItems",
+                              JSON.stringify(cart)
+                            );
+                            setCartItems(cart);
+                            window.dispatchEvent(new Event("storage"));
+                          }
+                        }}
+                        className="text-black w-6 h-6  flex items-center justify-center text-sm  hover:bg-gray-200 rounded-lg"
+                      >
+                        -
+                      </button>
+
+                      <span className="text-sm font-medium">
+                        {cartItems.find((item) => item._id === product._id)
+                          ?.quantity || 1}
+                      </span>
+
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          const cart =
+                            JSON.parse(localStorage.getItem("cartItems")) || [];
+                          const index = cart.findIndex(
+                            (item) => item._id === product._id
+                          );
+
+                          if (index > -1) {
+                            cart[index].quantity += 1;
+                            localStorage.setItem(
+                              "cartItems",
+                              JSON.stringify(cart)
+                            );
+                            setCartItems(cart);
+                            window.dispatchEvent(new Event("storage"));
+                          }
+                        }}
+                        className=" hover:bg-gray-200 rounded-lg text-black w-6 h-6  flex items-center justify-center text-sm"
+                      >
+                        +
+                      </button>
+                    </div>
+
+                    {/* Delete Icon - Right */}
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        const cart =
+                          JSON.parse(localStorage.getItem("cartItems")) || [];
+                        const updatedCart = cart.filter(
+                          (item) => item._id !== product._id
+                        );
+                        localStorage.setItem(
+                          "cartItems",
+                          JSON.stringify(updatedCart)
+                        );
+                        setCartItems(updatedCart);
+                        window.dispatchEvent(new Event("storage"));
+                      }}
+                      className="text-red-600 hover:text-red-800"
+                    >
+                      <FaTrash className="w-4 h-4" />
+                    </button>
+                  </div>
+                ) : (
+                  <button
+                    className="w-full bg-black hover:bg-gray-700 text-white font-thin py-2 px-4 rounded-md transition-colors duration-200"
+                    onClick={(e) => {
+                      e.stopPropagation();
+
                       const cart =
                         JSON.parse(localStorage.getItem("cartItems")) || [];
-                      const index = cart.findIndex(
-                        (item) => item._id === product._id
-                      );
-
-                      if (index > -1) {
-                        cart[index].quantity += 1;
-                      } else {
-                        cart.push({ ...product, quantity: 1 });
-                      }
-
+                      cart.push({ ...product, quantity: 1 });
                       localStorage.setItem("cartItems", JSON.stringify(cart));
-                      setCartItems(cart); // Update state to change button text
-                      alert("Item added to cart!");
-                    }
-                  }}
-                  style={{
-                    fontFamily: '"Inter", "Helvetica Neue", Arial, sans-serif',
-                  }}
-                >
-                  {cartItems.some((item) => item._id === product._id)
-                    ? "Go to Cart"
-                    : "Add to Cart"}
-                </button>
+                      setCartItems(cart);
+                      window.dispatchEvent(new Event("storage"));
+                    }}
+                    style={{
+                      fontFamily:
+                        '"Inter", "Helvetica Neue", Arial, sans-serif',
+                    }}
+                  >
+                    Add to Cart
+                  </button>
+                )}
               </div>
             </div>
           ))}
